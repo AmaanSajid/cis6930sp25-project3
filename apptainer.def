@@ -1,0 +1,14 @@
+Bootstrap: docker
+From: python:3.11-slim
+
+%post
+  pip install uv
+  uv sync  # install deps declared in pyproject.toml
+  mkdir /workspace/output
+
+%environment
+  export PYTHONUNBUFFERED=1
+
+%runscript
+  # Pass host and port positionally → --command & --port
+  exec uv run python -m src.main --consume --command "$1" --port "$2"
