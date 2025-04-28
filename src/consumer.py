@@ -7,20 +7,25 @@ import csv, json, pathlib
 import pika
 from loguru import logger
 from .classifier import label
-
+import os
 # Exchange is fixed by spec; host/port injected by main.py
 RABBIT: dict[str, str | int] = {"exchange": "ufo", "exch_type": "fanout"}
+
 
 OUTDIR = pathlib.Path("output")
 OUTDIR.mkdir(exist_ok=True)
 CSV_PATH = OUTDIR / "messages.csv"
 LOG_PATH = OUTDIR / "run.log"
+credentials = pika.PlainCredentials("guest", "guest")   # ← hard-coded defaults
+
+
 
 logger.add(LOG_PATH, rotation="10 MB", serialize=True)
 
 
 def consume_forever() -> None:
-    params = pika.ConnectionParameters(RABBIT["host"], RABBIT["port"])
+    params = pika.ConnectionParameters(RABBIT["host"], RABBIT["port"],
+                                  credentials=credentials, heartbeat=60)
     with pika.BlockingConnection(params) as conn, conn.channel() as ch:
         ch.exchange_declare(exchange=RABBIT["exchange"],
                             exchange_type=RABBIT["exch_type"])

@@ -1,0 +1,19 @@
+services:
+  rabbit:
+    image: rabbitmq:3-management # AMQP (5672) + UI (15672)
+    container_name: ufo-rabbit
+    ports:
+      - "5672:5672" # AMQP clients
+      - "15672:15672" # http://localhost:15672
+    # no RABBITMQ_DEFAULT_USER/PASS → stays guest/guest
+
+  publisher:
+    image: python:3.11-slim
+    container_name: ufo-pub
+    depends_on:
+      - rabbit
+    volumes:
+      - ./tools/publish_live.py:/app/publish_live.py:ro
+    command: >
+      sh -c "pip install pika faker &&
+             python /app/publish_live.py"
