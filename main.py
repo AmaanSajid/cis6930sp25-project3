@@ -12,7 +12,6 @@ python -m src.main --report
 from __future__ import annotations
 import argparse
 from loguru import logger
-import os
 
 
 def _parse_args():
@@ -32,14 +31,14 @@ def main() -> None:
 
     if args.consume:
         # inject host/port and start consumer
-        from .consumer import RABBIT, consume_forever
+        from src.consumer import RABBIT, consume_forever
         if not args.command:
             raise SystemExit("--command (host) is required in consume mode")
         RABBIT.update(host=args.command, port=args.port)
         consume_forever()
     else:
         # build reports
-        from .visualize import make_reports
+        from src.visualize import make_reports
         logger.info("🖨️  Generating PDF reports…")
         make_reports()
 

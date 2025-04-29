@@ -7,7 +7,6 @@ import csv, json, pathlib
 import pika
 from loguru import logger
 from .classifier import label
-import os
 # Exchange is fixed by spec; host/port injected by main.py
 RABBIT: dict[str, str | int] = {"exchange": "ufo", "exch_type": "fanout"}
 

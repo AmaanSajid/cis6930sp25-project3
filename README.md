@@ -42,14 +42,13 @@ python3 -m uv run python -m pytest -v
 
 ## 4  Stream & classify messages
 ```bash
-python3 -m uv run python -m src.main \
-        --consume --command localhost --port 5672
+python3 -m uv run python main.py --consume --command localhost --port 5672
 ```
 - Ctrl-C after ~30 s
 
 ## 5  Generate the four PDF reports
 ```bash
-python3 -m uv run python -m src.main --report
+python3 -m uv run python main.py --report
 ```
 
 ## 6  Container build
