@@ -1,14 +1,14 @@
 Bootstrap: docker
-From: python:3.11-slim
+From: python:3.10
 
 %post
   pip install uv
-  uv sync  # install deps declared in pyproject.toml
-  mkdir /workspace/output
+  pip install pika>=1.3.0 loguru>=0.7.0 pandas>=1.5.0 matplotlib>=3.6.0 wordfreq>=3.0.0 pytest>=8.0.0
+  
 
 %environment
   export PYTHONUNBUFFERED=1
 
 %runscript
   # Pass host and port positionally → --command & --port
-  exec uv run python -m src.main --consume --command "$1" --port "$2"
+  exec uv run python main.py --consume --command "$1" --port "$2"

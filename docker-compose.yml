@@ -8,7 +8,7 @@ services:
     # no RABBITMQ_DEFAULT_USER/PASS → stays guest/guest
 
   publisher:
-    image: python:3.11-slim
+    image: python:3.10
     container_name: ufo-pub
     depends_on:
       - rabbit
